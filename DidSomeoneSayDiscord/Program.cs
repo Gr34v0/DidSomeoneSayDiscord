@@ -64,14 +64,12 @@ namespace DidSomeoneSayDiscord
     class Bot
     {
 
-        static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "../../../../bot.creds");
+        static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "bot.creds");
 
         readonly string[] file_lines = System.IO.File.ReadAllLines(cred_path);
 
         string twitch_username{ get;set;}
         string access_token { get;set;}
-
-
 
         TwitchClient client;
 
