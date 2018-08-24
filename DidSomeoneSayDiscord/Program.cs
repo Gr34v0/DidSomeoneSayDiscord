@@ -64,7 +64,8 @@ namespace DidSomeoneSayDiscord
     class Bot
     {
 
-        static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "bot.creds");
+        static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "bot.creds"); //Used for deployment
+        //static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "../../../bot.creds"); //Used for running in IDE
 
         readonly string[] file_lines = System.IO.File.ReadAllLines(cred_path);
 
@@ -127,14 +128,18 @@ namespace DidSomeoneSayDiscord
         {
             string message = "Did someone say Discord?? Come join our community here - https://discord.gg/jm8nw7R";
 
-            if ((e.ChatMessage.Message.Contains("discord") || e.ChatMessage.Message.Contains("Discord")) && !e.ChatMessage.Message.Contains("!discord") && !e.ChatMessage.Message.Contains("didsomeonesaydiscord"))
+            if (e.ChatMessage.Username.Contains("quackbot28"))
+            {
+                Console.WriteLine($"Injested invalid message from {e.ChatMessage.Username}: {e.ChatMessage.Message}");
+            }
+            else if ((e.ChatMessage.Message.ToLower().Contains("discord")) && !e.ChatMessage.Message.Contains("!discord") && !e.ChatMessage.Message.ToLower().Contains("didsomeonesaydiscord"))
             {
                 Console.WriteLine($"+++++ Sent message: {message} +++++");
                 client.SendMessage(e.ChatMessage.Channel, message);
             }
             else
             {
-                Console.WriteLine($"Injested invalid message: {e.ChatMessage.Message}");
+                Console.WriteLine($"Injested invalid message from {e.ChatMessage.Username}: {e.ChatMessage.Message}");
             }
         }
     }
