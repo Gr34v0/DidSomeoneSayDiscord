@@ -104,7 +104,7 @@ namespace DidSomeoneSayDiscord
 
         public void ConnectClient()
         {
-            Console.WriteLine("+++++ Meme connected +++++");
+            Console.WriteLine("+++++ Meme Online +++++");
             client.Connect();
         }
 
