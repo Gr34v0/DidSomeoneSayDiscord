@@ -134,7 +134,7 @@ namespace DidSomeoneSayDiscord
             }
             else if ((e.ChatMessage.Message.ToLower().Contains("discord")) && !e.ChatMessage.Message.Contains("!discord") && !e.ChatMessage.Message.ToLower().Contains("didsomeonesaydiscord"))
             {
-                Console.WriteLine($"+++++ Sent message: {message} +++++");
+                Console.WriteLine($"+++++ Sent message: \"{message}\" in response to {e.ChatMessage.Message} +++++");
                 client.SendMessage(e.ChatMessage.Channel, message);
             }
             else
