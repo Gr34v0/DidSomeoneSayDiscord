@@ -80,6 +80,12 @@ namespace DidSomeoneSayDiscord
                 System.Console.WriteLine($"+++++ Sent message: \"{message}\" in response to {e.ChatMessage.Message} +++++");
                 client.SendMessage(e.ChatMessage.Channel, message);
             }
+            else if (e.ChatMessage.Message.Contains("mratomWave mratomWave mratomWave mratomWave"))
+            {
+                message = "mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave";
+                System.Console.WriteLine($"+++++ Sent message: \"{message}\" in response to {e.ChatMessage.Message} +++++");
+                client.SendMessage(e.ChatMessage.Channel, message);
+            }
             else
             {
                 System.Console.WriteLine($"Injested invalid message from {e.ChatMessage.Username}: {e.ChatMessage.Message}");
