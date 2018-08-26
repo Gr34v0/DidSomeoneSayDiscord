@@ -7,34 +7,39 @@ namespace DidSomeoneSayDiscord
 {
     class MemeBot
     {
-        static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "bot.creds"); //Used for deployment
-        //static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "../../../bot.creds"); //Used for running in IDE
+        bool Experimental { get; set; }
+
+        //static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "bot.creds"); //Used for deployment
+        static readonly string cred_path = Path.Combine(Directory.GetCurrentDirectory(), "../../../bot.creds"); //Used for running in IDE
 
         readonly string[] file_lines = System.IO.File.ReadAllLines(cred_path);
 
-        string twitch_username { get; set; }
-        string access_token { get; set; }
+        string Twitch_Username { get; set; }
+        string Access_Token { get; set; }
 
         TwitchClient client;
 
-        public MemeBot(string twitch_target)
+        public MemeBot(string twitch_target, bool exp_mode)
         {
+
+            Experimental = exp_mode;
+
             foreach (string line in file_lines)
             {
                 if (line.Contains("twitch_username"))
                 {
                     string[] line_split = line.Split(":");
-                    twitch_username = line_split[1];
+                    Twitch_Username = line_split[1];
                 }
                 else if (line.Contains("access_token"))
                 {
                     string[] line_split = line.Split(":");
-                    access_token = line_split[1];
+                    Access_Token = line_split[1];
                 }
             }
 
 
-            ConnectionCredentials credentials = new ConnectionCredentials(twitch_username, access_token);
+            ConnectionCredentials credentials = new ConnectionCredentials(Twitch_Username, Access_Token);
 
             client = new TwitchClient();
             client.Initialize(credentials, twitch_target);
@@ -75,17 +80,22 @@ namespace DidSomeoneSayDiscord
             {
                 System.Console.WriteLine($"Injested invalid message from {e.ChatMessage.Username}: {e.ChatMessage.Message}");
             }
+
             else if ((e.ChatMessage.Message.ToLower().Contains("discord")) && !e.ChatMessage.Message.Contains("!discord") && !e.ChatMessage.Message.ToLower().Contains("didsomeonesaydiscord"))
             {
                 System.Console.WriteLine($"+++++ Sent message: \"{message}\" in response to {e.ChatMessage.Message} +++++");
                 client.SendMessage(e.ChatMessage.Channel, message);
             }
-            else if (e.ChatMessage.Message.Contains("mratomWave mratomWave mratomWave mratomWave"))
+
+            // TODO: Make this respond only once per "spam group"
+            else if (Experimental && e.ChatMessage.Message.Contains("mratomWave mratomWave mratomWave mratomWave"))
             {
                 message = "mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave mratomWave";
+
                 System.Console.WriteLine($"+++++ Sent message: \"{message}\" in response to {e.ChatMessage.Message} +++++");
                 client.SendMessage(e.ChatMessage.Channel, message);
             }
+
             else
             {
                 System.Console.WriteLine($"Injested invalid message from {e.ChatMessage.Username}: {e.ChatMessage.Message}");
